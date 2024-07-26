@@ -1,7 +1,9 @@
 import zipfile
 import json
+import pandas as pd
 
 from os import listdir
+
 
 
 class DataClean:
@@ -48,10 +50,16 @@ class DataClean:
                 self.MERGE.append(merged_item)
         return self.MERGE
 
+    def merge_to_df(self):
+        res = pd.DataFrame(self.MERGE)
+        return res
+
+
 
 data_cleaner = DataClean()
 data_cleaner.get_train_img_id_filename()
 data_cleaner.get_train_annotations()
-merged_data = data_cleaner.merge_img_ann()
+data_cleaner.merge_img_ann()
+print(data_cleaner.merge_to_df())
 
-print(merged_data[0])
+
