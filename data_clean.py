@@ -1,15 +1,17 @@
+import pandas as pd
+import numpy as np
 import zipfile
 import json
-import pandas as pd
+import cv2
 
-from os import listdir
-
+from os import listdir, makedirs, path
 
 
 class DataClean:
     def __init__(self, data_file='./archive.zip', output_dir='./data'):
         try:
-            if listdir('./date'): return
+            if listdir('./date'):
+                return
             with zipfile.ZipFile(data_file, 'r') as zip_dir:
                 zip_dir.extractall(output_dir)
         except:
@@ -20,7 +22,8 @@ class DataClean:
         with open('./data/train/_annotations.coco.json') as f:
             train_json = json.load(f)
             for img in train_json['images']:
-                self.IMG.append({"id": img['id'], "file_name": img['file_name']})
+                self.IMG.append(
+                    {"id": img['id'], "file_name": img['file_name']})
         return self.IMG
 
     def get_train_annotations(self):
@@ -54,12 +57,34 @@ class DataClean:
         res = pd.DataFrame(self.MERGE)
         return res
 
+    def generate_masked_imgs(self, img_dir='./data/train', output_dir='./train-masks'):
+        masks_n = 0
+        print('Generating masks...')
+
+        if not path.exists(output_dir):
+            makedirs(output_dir)
+
+        for img_info in self.MERGE:
+            bbox = img_info['bbox']
+            seg = img_info['seg']
+
+            img = cv2.imread(f"{img_dir}/{img_info['file_name']}")
+            mask = np.zeros_like(img)
+
+            x, y, w, h = map(int, map(round, bbox))
+
+            mask[y:y+h, x:x+w] = (255, 255, 255)
+            result_rgb = cv2.cvtColor(mask, cv2.COLOR_BGR2RGB)
+
+            cv2.imwrite(f"{output_dir}/{img_info['file_name']}", result_rgb)
+            masks_n += 1
+
+        print(f"Generated {masks_n} masks")
 
 
 data_cleaner = DataClean()
 data_cleaner.get_train_img_id_filename()
 data_cleaner.get_train_annotations()
 data_cleaner.merge_img_ann()
-print(data_cleaner.merge_to_df())
-
-
+# print(data_cleaner.merge_to_df())
+data_cleaner.generate_masked_imgs()
