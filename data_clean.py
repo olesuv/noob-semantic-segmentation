@@ -57,7 +57,7 @@ class DataClean:
         res = pd.DataFrame(self.MERGE)
         return res
 
-    def generate_masked_imgs(self, img_dir='./data/train', output_dir='./train-masks'):
+    def generate_masked_imgs(self, img_dir='./data/train', output_dir='./data/train-masks'):
         masks_n = 0
         print('Generating masks...')
 
