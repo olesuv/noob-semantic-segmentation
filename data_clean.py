@@ -66,14 +66,10 @@ class DataClean:
                 continue
 
             bbox = img_info['bbox']
+            mask = np.zeros_like(img)
 
             x, y, w, h = map(int, map(round, bbox))
-        
-            x_end = min(x + w, img.shape[1])
-            y_end = min(y + h, img.shape[0])
-
-            mask = np.zeros_like(img)
-            mask[y:y_end, x:x_end] = (255, 255, 255)
+            mask[y:y+h, x:x+w] = (255, 255, 255)
 
             mask_path = os.path.join(output_dir, img_info['file_name'])
             cv2.imwrite(mask_path, mask)
