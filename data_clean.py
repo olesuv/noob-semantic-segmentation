@@ -4,6 +4,7 @@ import json
 import cv2
 import os
 
+
 class DataClean:
     def __init__(self, data_file='./archive.zip', output_dir='./data'):
         try:
@@ -14,17 +15,17 @@ class DataClean:
         except Exception as e:
             print(f"Already extracted or no data: {e}")
 
-    def get_train_img_id_filename(self):
+    def get_img_id_filename(self, img_dir='./data/train'):
         self.IMG = []
-        with open('./data/train/_annotations.coco.json') as f:
+        with open(f"{img_dir}/_annotations.coco.json") as f:
             train_json = json.load(f)
             for img in train_json['images']:
                 self.IMG.append({"id": img['id'], "file_name": img['file_name']})
         return self.IMG
 
-    def get_train_annotations(self):
+    def get_annotations(self, img_dir='./data/train'):
         self.ANN = []
-        with open('./data/train/_annotations.coco.json') as f:
+        with open(f"{img_dir}/_annotations.coco.json") as f:
             train_json = json.load(f)
             for ann in train_json['annotations']:
                 self.ANN.append({
@@ -77,22 +78,22 @@ class DataClean:
 
         print(f"Generated {masks_n} masks")
 
-    def resize_img_dir_128(self, img_dir='./data/train'):
-        for filename in os.listdir(img_dir):
-            if filename.endswith('.json'):
-                continue
-            img_path = os.path.join(img_dir, filename)
-            img = cv2.imread(img_path)
-            if img is not None:
-                resized_img = cv2.resize(img, (128, 128))
-                cv2.imwrite(img_path, resized_img)
-            else:
-                print(f"Cannot read image file {img_path}. Skipping.")
-        print(f"Resized directory with name `{img_dir}` to 128x128 images")
 
-data_cleaner = DataClean()
-data_cleaner.get_train_img_id_filename()
-data_cleaner.get_train_annotations()
-data_cleaner.merge_img_ann()
-data_cleaner.generate_masked_imgs()
+train_images_path = './data/train'
+train_masks_path = './data/train-masks'
+
+train_dc = DataClean()
+train_dc.get_img_id_filename()
+train_dc.get_annotations()
+train_dc.merge_img_ann()
+train_dc.generate_masked_imgs()
+
+test_images_path = './data/test'
+test_masks_path = './data/test-masks'
+
+test_dc = DataClean()
+test_dc.get_img_id_filename(img_dir=test_images_path)
+test_dc.get_annotations(img_dir=test_images_path)
+test_dc.merge_img_ann()
+test_dc.generate_masked_imgs(img_dir=test_images_path, output_dir=test_masks_path)
 
