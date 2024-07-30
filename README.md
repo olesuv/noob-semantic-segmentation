@@ -1,5 +1,8 @@
 # U-Net MRI Semantic Segmentation
 
+## DISCLAIMER
+Because of late applying for challange and technical problems with platform Kaggle (not verifying my phone number) have to use other dataset.
+
 ## Setup
 1. Download dataset: https://www.kaggle.com/datasets/pkdarabi/brain-tumor-image-dataset-semantic-segmentation/data
 2. Extract dataset to folder name `data` here.
