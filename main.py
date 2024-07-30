@@ -33,6 +33,6 @@ if __name__ == "__main__":
     unet_train.train()
     unet_train.test_model(X_test, y_test)
 
-    predicted_imgs = unet_train.model_predict(X_test, y_test)
+    predicted_imgs = unet_train.model_predict(X_test)
     for i in range(5):
         utils.display_images(X_test[i], predicted_imgs[i], y_test[i])
