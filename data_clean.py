@@ -20,7 +20,8 @@ class DataClean:
         with open(f"{img_dir}/_annotations.coco.json") as f:
             train_json = json.load(f)
             for img in train_json['images']:
-                self.IMG.append({"id": img['id'], "file_name": img['file_name']})
+                self.IMG.append(
+                    {"id": img['id'], "file_name": img['file_name']})
         return self.IMG
 
     def get_annotations(self, img_dir='./data/train'):
@@ -77,23 +78,3 @@ class DataClean:
             masks_n += 1
 
         print(f"Generated {masks_n} masks")
-
-
-train_images_path = './data/train'
-train_masks_path = './data/train-masks'
-
-train_dc = DataClean()
-train_dc.get_img_id_filename()
-train_dc.get_annotations()
-train_dc.merge_img_ann()
-train_dc.generate_masked_imgs()
-
-test_images_path = './data/test'
-test_masks_path = './data/test-masks'
-
-test_dc = DataClean()
-test_dc.get_img_id_filename(img_dir=test_images_path)
-test_dc.get_annotations(img_dir=test_images_path)
-test_dc.merge_img_ann()
-test_dc.generate_masked_imgs(img_dir=test_images_path, output_dir=test_masks_path)
-
