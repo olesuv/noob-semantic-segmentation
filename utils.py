@@ -36,7 +36,7 @@ def dice_score(y_true, y_pred, smooth=1):
                                            smooth)
 
 
-def display_images(input_img, predicted_img, true_img):
+def save_results_img(input_img, predicted_img, true_img, n: int):
     fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
     axes[0].imshow(input_img.squeeze(), cmap='gray')
@@ -51,4 +51,5 @@ def display_images(input_img, predicted_img, true_img):
     axes[2].set_title('True Image')
     axes[2].axis('off')
 
+    plt.savefig(f"./benchmarks/results_{n}.png")
     plt.show()
