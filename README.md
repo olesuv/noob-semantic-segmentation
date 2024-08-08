@@ -2,7 +2,7 @@
 
 ## DISCLAIMER
 
-This task for test requirement in [https://www.winstars.ai/events/ds-internship-summer]('winstarts ai'). But different dataset.
+This task for test requirement in [winstarts ai](https://www.winstars.ai/events/ds-internship-summer). But different dataset.
 
 ## Setup
 
